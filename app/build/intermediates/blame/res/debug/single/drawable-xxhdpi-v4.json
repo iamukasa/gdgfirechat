@@ -180,12 +180,12 @@
         "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/drawable-xxhdpi-v4/abc_ab_share_pack_mtrl_alpha.9.png"
     },
     {
-        "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4/common_google_signin_btn_icon_dark_pressed.9.png",
-        "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.1/res/drawable-xxhdpi-v4/common_google_signin_btn_icon_dark_pressed.9.png"
-    },
-    {
         "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png",
         "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/drawable-xxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4/common_google_signin_btn_icon_dark_pressed.9.png",
+        "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.1/res/drawable-xxhdpi-v4/common_google_signin_btn_icon_dark_pressed.9.png"
     },
     {
         "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/drawable-xxhdpi-v4/common_google_signin_btn_icon_light_disabled.9.png",
