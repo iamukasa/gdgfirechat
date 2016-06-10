@@ -52,9 +52,9 @@
         android:ems="10"
         android:id="@+id/editPass" />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="205dp"
         android:layout_height="wrap_content"
-        android:text="Sign UP"
+        android:text="Sign up"
         android:background="@color/colorPrimary"
         android:textColor="@color/white_pure"
         android:id="@+id/butonSignUp"
@@ -62,7 +62,7 @@
 
     <Button
         android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+        android:layout_width="205dp"
         android:layout_height="wrap_content"
         android:text="Log In"
         android:background="@color/colorPrimary"
