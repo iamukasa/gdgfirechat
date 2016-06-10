@@ -7,13 +7,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.FirebaseError;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -179,4 +182,21 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activty, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_log_out) {
+            FirebaseAuth.getInstance().signOut();
+
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
+
 }

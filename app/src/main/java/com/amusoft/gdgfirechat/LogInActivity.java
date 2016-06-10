@@ -36,6 +36,9 @@ public class LogInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_log_in);
         coordinatorLayout = (LinearLayout) findViewById(R.id
                 .loglogloglog);
+        mAuth = FirebaseAuth.getInstance();
+        authenticationSetup();
+
 
         username=(EditText)findViewById(R.id.editUsername);
         email=(EditText)findViewById(R.id.editemail);
@@ -139,16 +142,20 @@ private void doUserAdd(final String username, final String email, String pass) {
                 if (user != null) {
                     // User is signed in
                     Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, "Admin signed in", Snackbar.LENGTH_LONG);
+                            .make(coordinatorLayout, "You signed in", Snackbar.LENGTH_LONG);
                     snackbar.show();
                     Intent i = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(i);
                     finish();
 
                 } else {
+                    Intent i = new Intent(getApplicationContext(),LogInActivity.class);
+                    startActivity(i);
+                    finish();
+
                     // User is signed out
                     Snackbar snackbar = Snackbar
-                            .make(coordinatorLayout, "Admin Signed Out", Snackbar.LENGTH_LONG);
+                            .make(coordinatorLayout, "You Signed Out", Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                 }
