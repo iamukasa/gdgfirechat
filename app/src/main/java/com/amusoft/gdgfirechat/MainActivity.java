@@ -122,12 +122,21 @@ public class MainActivity extends AppCompatActivity{
         mChatListAdapter.cleanup();
     }
 
-    private void setupUsername() {
-        SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
-        mUsername = prefs.getString("username", null);
-
+//    private void setupUsername() {
+//        SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
+//        mUsername = prefs.getString("username", null);
+//
+//    }
+private void setupUsername() {
+    SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
+    mUsername = prefs.getString("username", null);
+    if (mUsername == null) {
+        Random r = new Random();
+        // Assign a random user name if we don't have one saved.
+        mUsername = "Client" + r.nextInt(100000);
+        prefs.edit().putString("username", mUsername).commit();
     }
-
+}
     private void sendMessage() {
         EditText inputText = (EditText) findViewById(R.id.chat_editText);
         String input = inputText.getText().toString();
@@ -142,12 +151,13 @@ public class MainActivity extends AppCompatActivity{
     private void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdminDetails);
         if (toolbar != null) {
-
-            setSupportActionBar(toolbar);
-            setUpActionbar();
-            getOverflowMenu();
-            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-            toolbar.setTitleTextColor(getResources().getColor(R.color.white_pure));
+            if(getSupportActionBar()!=null) {
+                setSupportActionBar(toolbar);
+                setUpActionbar();
+                getOverflowMenu();
+                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                toolbar.setTitleTextColor(getResources().getColor(R.color.white_pure));
+            }
         }
 
     }

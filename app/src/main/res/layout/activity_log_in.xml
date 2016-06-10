@@ -12,6 +12,7 @@
     tools:context="com.amusoft.gdgfirechat.LogInActivity">
 
     <TextView
+        android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
