@@ -238,14 +238,14 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
 
         if (author != null && author.contains(mUsername)) {
             row = inflater.inflate(R.layout.chat_listitem_right, parent, false);
-            ((TextView) row.findViewById(R.id.text)).setText(comment.getMessage());
+            ((TextView) row.findViewById(R.id.text)).setText(mUsername+"\n"+comment.getMessage());
 
 
         } else {
 
 
             row = inflater.inflate(R.layout.chat_listitem_left, parent, false);
-            ((TextView) row.findViewById(R.id.text)).setText(comment.getMessage());
+            ((TextView) row.findViewById(R.id.text)).setText(author+"\n"+comment.getMessage());
 
         }
         wrapper = (LinearLayout) row.findViewById(R.id.wrapper);

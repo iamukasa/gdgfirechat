@@ -1,5 +1,6 @@
 package com.amusoft.gdgfirechat;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -204,6 +205,11 @@ public class MainActivity extends AppCompatActivity{
         int id = item.getItemId();
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(getApplicationContext(),LogInActivity .class);
+            startActivity(i);
+            finish();
+
+
 
         }
         return super.onOptionsItemSelected(item);
