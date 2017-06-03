@@ -1,10 +1,10 @@
 [
     {
-        "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
-        "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+        "merged": "/home/miles/DEMO/gdgfirechat/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/home/miles/.android/build-cache/af60aa978a0827ad7797b9c492dfc8555fb6a51a/output/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
     },
     {
-        "merged": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
-        "source": "/home/dice/AndroidStudioProjects/GDGFirechat/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.4.0/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+        "merged": "/home/miles/DEMO/gdgfirechat/app/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/home/miles/.android/build-cache/af60aa978a0827ad7797b9c492dfc8555fb6a51a/output/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
     }
 ]
