@@ -3,6 +3,7 @@ package com.amusoft.gdgfirechat;
 /**
  * Created by Marco on 10/10/2014.
  */
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.*;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 
 
 
+@SuppressLint("AppCompatCustomView")
 public class CircleImageView extends ImageView {
 
     private static final ScaleType SCALE_TYPE = ScaleType.CENTER_CROP;

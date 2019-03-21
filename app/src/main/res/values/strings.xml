@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GDGFirechat</string>
+    <string name="progress_uploading">Uploading Image</string>
+    <string name="hintuser">enter your text here</string>
 </resources>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,6 +22,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +67,9 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
 
                 Map<String, Object> newPost =
                         (Map<String, Object>) dataSnapshot.getValue();
+                if (newPost.get("message").toString() !=null && newPost.get("author").toString()!=null){
+
+
                 model = new ChatMessage(newPost.get("message").toString(), newPost.get("author").toString());
                 String key = dataSnapshot.getKey();
 
@@ -85,6 +90,8 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
                         mKeys.add(nextIndex, key);
                         showNotification(model);
                     }
+                }
+
                 }
 
                 notifyDataSetChanged();
@@ -231,21 +238,44 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
 
         // Map a Chat object to an entry in our listview
         String author = comment.getAuthor();
+        String message = comment.getMessage();
 
 
         // If the message was sent by this user, color it differently
         LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(this.activity.getApplicationContext().LAYOUT_INFLATER_SERVICE);
 
-        if (author != null && author.contains(mUsername)) {
-            row = inflater.inflate(R.layout.chat_listitem_right, parent, false);
-            ((TextView) row.findViewById(R.id.text)).setText(mUsername+"\n"+comment.getMessage());
+        if (author != null  && author.contains(mUsername)) {
+            if ( message.contains("firebasestorage.googleapis.com")) {
+
+                row = inflater.inflate(R.layout.chat_list_image_right, parent, false);
+                ImageView image  = (ImageView) row.findViewById(R.id.textimage);
+                Picasso.with(activity.getApplicationContext()).load(message).into(image);
+            }
+            else{
+                row = inflater.inflate(R.layout.chat_listitem_right, parent, false);
+                ((TextView) row.findViewById(R.id.text)).setText(mUsername + "\n" + comment.getMessage());
+
+            }
+
 
 
         } else {
 
+            if ( message.contains("firebasestorage.googleapis.com")) {
 
-            row = inflater.inflate(R.layout.chat_listitem_left, parent, false);
-            ((TextView) row.findViewById(R.id.text)).setText(author+"\n"+comment.getMessage());
+                row = inflater.inflate(R.layout.chat_list_image_left, parent, false);
+                ImageView image  = (ImageView) row.findViewById(R.id.textimage);
+                Picasso.with(activity.getApplicationContext()).load(message).into(image);
+
+            }else {
+                row = inflater.inflate(R.layout.chat_listitem_left, parent, false);
+                ((TextView) row.findViewById(R.id.text)).setText(author+"\n"+comment.getMessage());
+
+            }
+
+
+
+
 
         }
         wrapper = (LinearLayout) row.findViewById(R.id.wrapper);

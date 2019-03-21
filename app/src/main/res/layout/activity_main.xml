@@ -39,12 +39,21 @@
         android:background="@android:color/white">
 
         <EditText
+            android:hint="@string/hintuser"
             android:id="@+id/chat_editText"
-            android:layout_width="match_parent"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="0dp"
             android:inputType="text" />
+        <Button
+            android:id="@+id/sendphoto"
+            android:background="@android:drawable/ic_menu_camera"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignRight="@id/chat_editText"
+           />
     </RelativeLayout>
     </RelativeLayout>
 

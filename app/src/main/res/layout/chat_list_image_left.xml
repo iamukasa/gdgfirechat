@@ -10,19 +10,9 @@
         android:id="@+id/wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
         android:orientation="horizontal"
-        android:gravity="center_vertical|right">
-
-
-        <TextView
-            android:id="@+id/text"
-            android:layout_width="242dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="@drawable/msg_out"
-            tools:text="Hello bubbles!"
-            android:textColor="@android:color/primary_text_light" />
+        android:gravity="center_vertical">
 
         <com.amusoft.gdgfirechat.CircleImageView
             android:id="@+id/image_view"
@@ -32,6 +22,14 @@
             app:border_color="@android:color/white"
             android:src="@drawable/user_placeholder"/>
 
+        <ImageView
+            android:id="@+id/textimage"
+            android:layout_width="242dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:background="@drawable/background_hd"
+            android:textColor="@android:color/primary_text_light"
+            tools:text="Hello bubbles!" />
     </LinearLayout>
 
 </LinearLayout>

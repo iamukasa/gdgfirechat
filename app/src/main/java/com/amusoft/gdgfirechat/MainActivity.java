@@ -1,44 +1,70 @@
 package com.amusoft.gdgfirechat;
 
+import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.DataSetObserver;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.Field;
-import java.util.Random;
+
 public class MainActivity extends AppCompatActivity{
 
+    private static final int RC_TAKE_PICTURE = 101;
+    private static final int PROGRESS_NOTIFICATION_ID = 2;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    FirebaseStorage storage=FirebaseStorage.getInstance();
+
 
     // Setup our Firebase mFirebaseRef
     DatabaseReference mFirebaseRef =database.getReference("chat");
+    StorageReference mStorageReref=storage.getReference();
+
+
+
 
     private String mUsername;
 
     private ValueEventListener mConnectedListener;
     private FirebaseListAdapter mChatListAdapter;
 
+
     ListView listView ;
+    Button sendphoto;
     EditText inputText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +81,14 @@ public class MainActivity extends AppCompatActivity{
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         inputText = (EditText) findViewById(R.id.chat_editText);
-        inputText.setOnKeyListener(new View.OnKeyListener() {
+        sendphoto  =(Button) findViewById(R.id.sendphoto);
+                inputText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
                     final String question =   inputText.getText().toString();
-                    sendMessage();
+                    sendMessage(setupUsername(),question);
                     inputText.setText("");
 
 
@@ -71,6 +98,76 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
+         sendphoto.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 sendPhoto();
+             }
+         });
+
+    }
+
+    private void sendPhoto() {
+
+        // Pick an image from storage
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        startActivityForResult(intent, RC_TAKE_PICTURE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_TAKE_PICTURE) {
+            if (resultCode == Activity.RESULT_OK) {
+
+                if (data != null) {
+
+
+                    Uri mFileUri =data.getData();
+
+                    System.out.print(mFileUri);
+                    uploadFromUri(mFileUri);
+                } else {
+                    
+                }
+            } else {
+                Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private void uploadFromUri(Uri mFileUri) {
+
+        // [START get_child_ref]
+        // Get a reference to store file at photos/<FILENAME>.jpg
+        final StorageReference photoRef = mStorageReref.child("photos")
+                .child(mFileUri.getLastPathSegment());
+        // [END get_child_ref]
+
+
+        // Upload file to Firebase Storage
+        photoRef.putFile(mFileUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                // [START_EXCLUDE
+                String imageuri = taskSnapshot.getDownloadUrl().toString();
+                sendMessage(setupUsername(), imageuri);
+                dismissProgressNotification();
+
+                // [END_EXCLUDE]
+
+            }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                showProgressNotification(getString(R.string.progress_uploading),
+                        taskSnapshot.getBytesTransferred(),
+                        taskSnapshot.getTotalByteCount());
+            }
+        })
+        ;
+
 
     }
 
@@ -123,27 +220,19 @@ public class MainActivity extends AppCompatActivity{
         mChatListAdapter.cleanup();
     }
 
-    private void setupUsername() {
+    private String setupUsername() {
         SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
         mUsername = prefs.getString("username", null);
 
+        return mUsername;
+
     }
-//private void setupUsername() {
-//    SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
-//    mUsername = prefs.getString("username", null);
-//    if (mUsername == null) {
-//        Random r = new Random();
-//        // Assign a random user name if we don't have one saved.
-//        mUsername = "Client" + r.nextInt(100000);
-//        prefs.edit().putString("username", mUsername).commit();
-//    }
-//}
-    private void sendMessage() {
-        EditText inputText = (EditText) findViewById(R.id.chat_editText);
-        String input = inputText.getText().toString();
-        if (!input.equals("")) {
+
+    private void sendMessage(String UserName, String question) {
+
+        if (!question.equals("")) {
             // Create our 'model', a Chat object
-            ChatMessage chat = new ChatMessage(input, mUsername);
+            ChatMessage chat = new ChatMessage(question,UserName);
             // Create a new, auto-generated child of that chat location, and save our chat data there
             mFirebaseRef =database.getReference("chat");
             mFirebaseRef.push().setValue(chat);
@@ -215,5 +304,40 @@ public class MainActivity extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
 
     }
+
+
+
+    /**
+     * Show notification with a progress bar.
+     */
+    protected void showProgressNotification(String caption, long completedUnits, long totalUnits) {
+        int percentComplete = 0;
+        if (totalUnits > 0) {
+            percentComplete = (int) (100 * completedUnits / totalUnits);
+        }
+
+        NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText(caption)
+                .setProgress(100, percentComplete, false)
+                .setOngoing(true)
+                .setAutoCancel(false);
+
+        NotificationManager manager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.notify(PROGRESS_NOTIFICATION_ID, builder.build());
+    }
+    /**
+     * Dismiss the progress notification.
+     */
+    protected void dismissProgressNotification() {
+        NotificationManager manager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        manager.cancel(PROGRESS_NOTIFICATION_ID);
+    }
+
 
 }

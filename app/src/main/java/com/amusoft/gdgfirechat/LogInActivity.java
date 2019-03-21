@@ -52,7 +52,7 @@ public class LogInActivity extends AppCompatActivity {
         blogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doFifebaseSign(editemail.getText().toString(),editpassword.getText().toString());
+                doFifebaseSign(editusername.getText().toString(),editemail.getText().toString(),editpassword.getText().toString());
 
             }
         });
@@ -114,8 +114,8 @@ private void doUserAdd(final String username, final String email, String pass) {
 
 
 
-    private void doFifebaseSign(String s, String s1) {
-        mAuth.signInWithEmailAndPassword(s, s1)
+    private void doFifebaseSign(final String username, final String email, String pass) {
+        mAuth.signInWithEmailAndPassword(email,pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -123,10 +123,16 @@ private void doUserAdd(final String username, final String email, String pass) {
                         Snackbar snackbar1 = Snackbar
                                 .make(coordinatorLayout, "Log in Sucessful", Snackbar.LENGTH_LONG);
                         snackbar1.show();
+
+                        //adding username to sharedprefs
+                        SharedPreferences prefs = getApplication().getSharedPreferences("ChatPrefs", 0);
+                        prefs.edit().putString("username",username).commit();
+
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
+
                             Snackbar snackbar = Snackbar
                                     .make(coordinatorLayout, "Authentication failed", Snackbar.LENGTH_LONG);
                             snackbar.show();
