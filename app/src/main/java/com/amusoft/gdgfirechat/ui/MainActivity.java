@@ -1,4 +1,4 @@
-package com.amusoft.gdgfirechat;
+package com.amusoft.gdgfirechat.ui;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -23,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 
+import com.amusoft.gdgfirechat.model.ChatMessage;
+import com.amusoft.gdgfirechat.R;
+import com.amusoft.gdgfirechat.adapter.FirebaseListAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

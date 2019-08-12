@@ -1,4 +1,4 @@
-package com.amusoft.gdgfirechat;
+package com.amusoft.gdgfirechat.adapter;
 
 import android.app.Activity;
 import android.app.NotificationManager;
@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import androidx.core.app.NotificationCompat;
 
+import com.amusoft.gdgfirechat.model.ChatMessage;
+import com.amusoft.gdgfirechat.ui.MainActivity;
+import com.amusoft.gdgfirechat.R;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

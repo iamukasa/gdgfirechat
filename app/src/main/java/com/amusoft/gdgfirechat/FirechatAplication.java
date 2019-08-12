@@ -2,6 +2,8 @@ package com.amusoft.gdgfirechat;
 
 import android.app.Application;
 
+import androidx.multidex.MultiDexApplication;
+
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -9,7 +11,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 /**
  * Created by dice on 6/10/16.
  */
-public class FirechatAplication extends Application {
+public class FirechatAplication extends MultiDexApplication {
     FirebaseDatabase myFirebaseRef;
 
     @Override

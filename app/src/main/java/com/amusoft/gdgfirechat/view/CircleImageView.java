@@ -1,4 +1,4 @@
-package com.amusoft.gdgfirechat;
+package com.amusoft.gdgfirechat.view;
 
 /**
  * Created by Marco on 10/10/2014.
@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.amusoft.gdgfirechat.R;
 
 
 @SuppressLint("AppCompatCustomView")

@@ -14,6 +14,7 @@ import android.net.Uri;
 
 import androidx.core.app.NotificationCompat;
 
+import com.amusoft.gdgfirechat.ui.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

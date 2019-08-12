@@ -1,4 +1,4 @@
-package com.amusoft.gdgfirechat;
+package com.amusoft.gdgfirechat.model;
 
 
 public class ChatMessage {

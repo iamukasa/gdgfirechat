@@ -1,4 +1,4 @@
-package com.amusoft.gdgfirechat;
+package com.amusoft.gdgfirechat.ui;
 
 
 import android.content.Intent;
@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.amusoft.gdgfirechat.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
