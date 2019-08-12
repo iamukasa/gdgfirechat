@@ -3,10 +3,9 @@ package com.amusoft.gdgfirechat;
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.TaskStackBuilder;
-import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,8 +15,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.app.NotificationCompat;
 
-import com.firebase.client.FirebaseError;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,8 +31,6 @@ import java.util.Map;
 public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
 
     Activity activity;
-
-
 
 
     // Setup our Firebase mFirebaseRef
@@ -67,30 +64,30 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
 
                 Map<String, Object> newPost =
                         (Map<String, Object>) dataSnapshot.getValue();
-                if (newPost.get("message").toString() !=null && newPost.get("author").toString()!=null){
+                if (newPost.get("message").toString() != null && newPost.get("author").toString() != null) {
 
 
-                model = new ChatMessage(newPost.get("message").toString(), newPost.get("author").toString());
-                String key = dataSnapshot.getKey();
+                    model = new ChatMessage(newPost.get("message").toString(), newPost.get("author").toString());
+                    String key = dataSnapshot.getKey();
 
-                // Insert into the correct location, based on previousChildName
-                if (previousChildName == null) {
-                    mModels.add(0, model);
-                    mKeys.add(0, key);
-
-                } else {
-                    int previousIndex = mKeys.indexOf(previousChildName);
-                    int nextIndex = previousIndex + 1;
-                    if (nextIndex == mModels.size()) {
-                        mModels.add(model);
-                        mKeys.add(key);
+                    // Insert into the correct location, based on previousChildName
+                    if (previousChildName == null) {
+                        mModels.add(0, model);
+                        mKeys.add(0, key);
 
                     } else {
-                        mModels.add(nextIndex, model);
-                        mKeys.add(nextIndex, key);
-                        showNotification(model);
+                        int previousIndex = mKeys.indexOf(previousChildName);
+                        int nextIndex = previousIndex + 1;
+                        if (nextIndex == mModels.size()) {
+                            mModels.add(model);
+                            mKeys.add(key);
+
+                        } else {
+                            mModels.add(nextIndex, model);
+                            mKeys.add(nextIndex, key);
+                            showNotification(model);
+                        }
                     }
-                }
 
                 }
 
@@ -169,7 +166,7 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
         int notificationID = 100;
         int numMessages = 0;
 
-                    /* Invoking the default notification service */
+        /* Invoking the default notification service */
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this.activity.getApplicationContext());
 
@@ -179,17 +176,17 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
 
 
-      /* Increase notification number every time a new notification arrives */
+        /* Increase notification number every time a new notification arrives */
         mBuilder.setNumber(++numMessages);
 
-      /* Creates an explicit intent for an Activity in your app */
+        /* Creates an explicit intent for an Activity in your app */
         Intent resultIntent = new Intent(this.activity.getApplicationContext(), MainActivity.class);
 
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this.activity.getApplicationContext());
         stackBuilder.addParentStack(MainActivity.class);
 
-      /* Adds the Intent that starts the Activity to the top of the stack */
+        /* Adds the Intent that starts the Activity to the top of the stack */
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
@@ -200,9 +197,9 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
         mBuilder.setContentIntent(resultPendingIntent);
 
         mNotificationManager =
-      (NotificationManager) this.activity.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) this.activity.getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
-      /* notificationID allows you to update the notification later on. */
+        /* notificationID allows you to update the notification later on. */
         mNotificationManager.notify(notificationID, mBuilder.build());
     }
 
@@ -244,37 +241,32 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
         // If the message was sent by this user, color it differently
         LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(this.activity.getApplicationContext().LAYOUT_INFLATER_SERVICE);
 
-        if (author != null  && author.contains(mUsername)) {
-            if ( message.contains("firebasestorage.googleapis.com")) {
+        if (author != null && author.contains(mUsername)) {
+            if (message.contains("firebasestorage.googleapis.com")) {
 
                 row = inflater.inflate(R.layout.chat_list_image_right, parent, false);
-                ImageView image  = (ImageView) row.findViewById(R.id.textimage);
-                Picasso.with(activity.getApplicationContext()).load(message).into(image);
-            }
-            else{
+                ImageView image = (ImageView) row.findViewById(R.id.textimage);
+                Picasso.get().load(message).into(image);
+            } else {
                 row = inflater.inflate(R.layout.chat_listitem_right, parent, false);
                 ((TextView) row.findViewById(R.id.text)).setText(mUsername + "\n" + comment.getMessage());
 
             }
 
 
-
         } else {
 
-            if ( message.contains("firebasestorage.googleapis.com")) {
+            if (message.contains("firebasestorage.googleapis.com")) {
 
                 row = inflater.inflate(R.layout.chat_list_image_left, parent, false);
-                ImageView image  = (ImageView) row.findViewById(R.id.textimage);
-                Picasso.with(activity.getApplicationContext()).load(message).into(image);
+                ImageView image = (ImageView) row.findViewById(R.id.textimage);
+                Picasso.get().load(message).into(image);
 
-            }else {
+            } else {
                 row = inflater.inflate(R.layout.chat_listitem_left, parent, false);
-                ((TextView) row.findViewById(R.id.text)).setText(author+"\n"+comment.getMessage());
+                ((TextView) row.findViewById(R.id.text)).setText(author + "\n" + comment.getMessage());
 
             }
-
-
-
 
 
         }

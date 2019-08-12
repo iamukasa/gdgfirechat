@@ -8,12 +8,6 @@ import android.content.SharedPreferences;
 import android.database.DataSetObserver;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,11 +18,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,20 +36,19 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.lang.reflect.Field;
+import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private static final int RC_TAKE_PICTURE = 101;
     private static final int PROGRESS_NOTIFICATION_ID = 2;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    FirebaseStorage storage=FirebaseStorage.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
 
     // Setup our Firebase mFirebaseRef
-    DatabaseReference mFirebaseRef =database.getReference("chat");
-    StorageReference mStorageReref=storage.getReference();
-
-
+    DatabaseReference mFirebaseRef = database.getReference("chat");
+    StorageReference mStorageReref = storage.getReference();
 
 
     private String mUsername;
@@ -63,9 +57,10 @@ public class MainActivity extends AppCompatActivity{
     private FirebaseListAdapter mChatListAdapter;
 
 
-    ListView listView ;
+    ListView listView;
     Button sendphoto;
     EditText inputText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,14 +76,14 @@ public class MainActivity extends AppCompatActivity{
 
         // Setup our input methods. Enter key on the keyboard or pushing the send button
         inputText = (EditText) findViewById(R.id.chat_editText);
-        sendphoto  =(Button) findViewById(R.id.sendphoto);
-                inputText.setOnKeyListener(new View.OnKeyListener() {
+        sendphoto = (Button) findViewById(R.id.sendphoto);
+        inputText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 // If the event is a key-down event on the "enter" button
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     // Perform action on key press
-                    final String question =   inputText.getText().toString();
-                    sendMessage(setupUsername(),question);
+                    final String question = inputText.getText().toString();
+                    sendMessage(setupUsername(), question);
                     inputText.setText("");
 
 
@@ -98,12 +93,12 @@ public class MainActivity extends AppCompatActivity{
                 return false;
             }
         });
-         sendphoto.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                 sendPhoto();
-             }
-         });
+        sendphoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendPhoto();
+            }
+        });
 
     }
 
@@ -123,12 +118,12 @@ public class MainActivity extends AppCompatActivity{
                 if (data != null) {
 
 
-                    Uri mFileUri =data.getData();
+                    Uri mFileUri = data.getData();
 
                     System.out.print(mFileUri);
                     uploadFromUri(mFileUri);
                 } else {
-                    
+
                 }
             } else {
                 Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show();
@@ -151,7 +146,7 @@ public class MainActivity extends AppCompatActivity{
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                 // [START_EXCLUDE
-                String imageuri = taskSnapshot.getDownloadUrl().toString();
+                String imageuri = Objects.requireNonNull(taskSnapshot.getMetadata()).getContentDisposition();
                 sendMessage(setupUsername(), imageuri);
                 dismissProgressNotification();
 
@@ -184,7 +179,7 @@ public class MainActivity extends AppCompatActivity{
                 super.cleanup();
             }
         };
-       listView=(ListView)findViewById(R.id.chat_listView);
+        listView = (ListView) findViewById(R.id.chat_listView);
         listView.setAdapter(mChatListAdapter);
         mChatListAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -232,28 +227,29 @@ public class MainActivity extends AppCompatActivity{
 
         if (!question.equals("")) {
             // Create our 'model', a Chat object
-            ChatMessage chat = new ChatMessage(question,UserName);
+            ChatMessage chat = new ChatMessage(question, UserName);
             // Create a new, auto-generated child of that chat location, and save our chat data there
-            mFirebaseRef =database.getReference("chat");
+            mFirebaseRef = database.getReference("chat");
             mFirebaseRef.push().setValue(chat);
             inputText.setText("");
         }
     }
+
     private void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarAdminDetails);
         if (toolbar != null) {
 
-                setSupportActionBar(toolbar);
-                setUpActionbar();
-                getOverflowMenu();
-                toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                toolbar.setTitleTextColor(getResources().getColor(R.color.white_pure));
-            }
+            setSupportActionBar(toolbar);
+            setUpActionbar();
+            getOverflowMenu();
+            toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+            toolbar.setTitleTextColor(getResources().getColor(R.color.white_pure));
         }
+    }
 
 
     private void setUpActionbar() {
-        if(getSupportActionBar()!=null){
+        if (getSupportActionBar() != null) {
             ActionBar bar = getSupportActionBar();
             bar.setTitle(getResources().getString(R.string.app_name));
             bar.setHomeButtonEnabled(false);
@@ -265,6 +261,7 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
+
     private void getOverflowMenu() {
 
         try {
@@ -272,7 +269,7 @@ public class MainActivity extends AppCompatActivity{
 
             Field menuKeyField = ViewConfiguration.class.getDeclaredField("sHasPermanentMenuKey");
 
-            if(menuKeyField != null) {
+            if (menuKeyField != null) {
 
                 menuKeyField.setAccessible(true);
                 menuKeyField.setBoolean(config, false);
@@ -283,6 +280,7 @@ public class MainActivity extends AppCompatActivity{
             e.printStackTrace();
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main_activty, menu);
@@ -294,17 +292,15 @@ public class MainActivity extends AppCompatActivity{
         int id = item.getItemId();
         if (id == R.id.action_log_out) {
             FirebaseAuth.getInstance().signOut();
-            Intent i = new Intent(getApplicationContext(),LogInActivity .class);
+            Intent i = new Intent(getApplicationContext(), LogInActivity.class);
             startActivity(i);
             finish();
-
 
 
         }
         return super.onOptionsItemSelected(item);
 
     }
-
 
 
     /**
@@ -329,6 +325,7 @@ public class MainActivity extends AppCompatActivity{
 
         manager.notify(PROGRESS_NOTIFICATION_ID, builder.build());
     }
+
     /**
      * Dismiss the progress notification.
      */
