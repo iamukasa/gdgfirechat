@@ -2,6 +2,7 @@ package com.amusoft.gdgfirechat
 
 import android.content.Intent
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 
@@ -21,3 +22,5 @@ inline fun <reified T : AppCompatActivity> AppCompatActivity.startActivityExt() 
         startActivity(this)
     }
 }
+
+fun EditText.getTextExt() = this.text.toString()

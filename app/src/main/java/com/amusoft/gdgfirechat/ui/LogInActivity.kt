@@ -3,10 +3,7 @@ package com.amusoft.gdgfirechat.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.amusoft.gdgfirechat.R
-import com.amusoft.gdgfirechat.addToPrefs
-import com.amusoft.gdgfirechat.showSnackBar
-import com.amusoft.gdgfirechat.startActivityExt
+import com.amusoft.gdgfirechat.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_log_in.*
@@ -31,13 +28,13 @@ class LogInActivity : AppCompatActivity() {
         authenticationSetup()
 
         butonLogIn.setOnClickListener {
-            signInUser(editUsername.text.toString(),
-                    editemail.text.toString(), editPass.text.toString())
+            signInUser(editUsername.getTextExt(),
+                    editemail.getTextExt(), editPass.getTextExt())
         }
 
         butonSignUp.setOnClickListener {
-            doUserAdd(editUsername.text.toString(),
-                    editemail.text.toString(), editPass.text.toString())
+            doUserAdd(editUsername.getTextExt(),
+                    editemail.getTextExt(), editPass.getTextExt())
         }
     }
 
@@ -48,6 +45,7 @@ class LogInActivity : AppCompatActivity() {
                 ?.addOnCompleteListener(this) { task ->
 
                     if (task.isSuccessful) {
+
                         addToPrefs(CHAT_PREFERENCES, CHAT_USERNAME, username)
 
                         //Saving userdata to firebase
@@ -91,8 +89,11 @@ class LogInActivity : AppCompatActivity() {
     private fun authenticationSetup() {
 
         authListener = FirebaseAuth.AuthStateListener {
+
             it.currentUser?.let {
+
                 startActivityExt<MainActivity>()
+
                 finish()
             }
         }
