@@ -36,7 +36,6 @@ public abstract class FirebaseListAdapter extends ArrayAdapter<ChatMessage> {
     Activity activity;
 
 
-    // Setup our Firebase mFirebaseRef
     DatabaseReference mRef;
 
 

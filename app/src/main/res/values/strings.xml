@@ -2,4 +2,7 @@
     <string name="app_name">GDGFirechat</string>
     <string name="progress_uploading">Uploading Image</string>
     <string name="hintuser">enter your text here</string>
+    <string name="auth_fail">Authentication failed</string>
+    <string name="auth_success">Signed up successfully</string>
+    <string name="login_success">Login successful</string>
 </resources>
