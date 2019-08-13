@@ -33,56 +33,68 @@ class LogInActivity : AppCompatActivity() {
         }
 
         butonSignUp.setOnClickListener {
-            doUserAdd(editUsername.getTextExt(),
+            signUpUser(editUsername.getTextExt(),
                     editemail.getTextExt(), editPass.getTextExt())
         }
     }
 
-    private fun doUserAdd(username: String, email: String, pass: String) {
+    private fun signUpUser(username: String, email: String, password: String) {
 
-        auth?.createUserWithEmailAndPassword(email, pass)
+        //TODO: validate email & password text
+        if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
 
-                ?.addOnCompleteListener(this) { task ->
+            auth?.createUserWithEmailAndPassword(email, password)
 
-                    if (task.isSuccessful) {
+                    ?.addOnCompleteListener(this) { task ->
 
-                        addToPrefs(CHAT_PREFERENCES, CHAT_USERNAME, username)
+                        if (task.isSuccessful) {
 
-                        //Saving userdata to firebase
-                        val result = HashMap<String, Any>()
-                        result["Username"] = username
-                        result["Email"] = email
+                            addToPrefs(CHAT_PREFERENCES, CHAT_USERNAME, username)
 
-                        ref.push().setValue(result)
+                            //Saving userdata to firebase
+                            val result = HashMap<String, Any>()
+                            result["Username"] = username
+                            result["Email"] = email
 
-                        showSnackBar(loglogloglog, getString(R.string.auth_success))
-                    } else {
-                        showSnackBar(loglogloglog, getString(R.string.auth_fail))
+                            ref.push().setValue(result)
+
+                            showSnackBar(loglogloglog, getString(R.string.auth_success))
+                        } else {
+                            showSnackBar(loglogloglog, getString(R.string.auth_fail))
+                        }
+
                     }
 
-                }
-
+        } else {
+            showSnackBar(loglogloglog, getString(R.string.empty_error))
+        }
 
     }
 
 
-    private fun signInUser(username: String, email: String, pass: String) {
+    private fun signInUser(username: String, email: String, password: String) {
 
-        auth?.signInWithEmailAndPassword(email, pass)
+        //TODO: validate email & password text
+        if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
 
-                ?.addOnCompleteListener(this) { task ->
+            auth?.signInWithEmailAndPassword(email, password)
 
-                    if (task.isSuccessful) {
-                        showSnackBar(loglogloglog, getString(R.string.login_success))
+                    ?.addOnCompleteListener(this) { task ->
 
-                        addToPrefs(CHAT_PREFERENCES, CHAT_USERNAME, username)
-                    } else {
+                        if (task.isSuccessful) {
+                            showSnackBar(loglogloglog, getString(R.string.login_success))
 
-                        showSnackBar(loglogloglog, getString(R.string.auth_fail))
+                            addToPrefs(CHAT_PREFERENCES, CHAT_USERNAME, username)
+                        } else {
+
+                            showSnackBar(loglogloglog, getString(R.string.auth_fail))
+
+                        }
 
                     }
-
-                }
+        } else {
+            showSnackBar(loglogloglog, getString(R.string.empty_error))
+        }
     }
 
 

@@ -5,4 +5,5 @@
     <string name="auth_fail">Authentication failed</string>
     <string name="auth_success">Signed up successfully</string>
     <string name="login_success">Login successful</string>
+    <string name="empty_error">Please enter all fields</string>
 </resources>
