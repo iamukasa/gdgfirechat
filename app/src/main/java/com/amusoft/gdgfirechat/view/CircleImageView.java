@@ -1,6 +1,6 @@
 package com.amusoft.gdgfirechat.view;
 
-/**
+/*
  * Created by Marco on 10/10/2014.
  */
 import android.annotation.SuppressLint;

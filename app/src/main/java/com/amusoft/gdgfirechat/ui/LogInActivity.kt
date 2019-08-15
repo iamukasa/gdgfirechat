@@ -28,11 +28,15 @@ class LogInActivity : AppCompatActivity() {
         authenticationSetup()
 
         butonLogIn.setOnClickListener {
+            progress.visible()
+            hideKeyBoard()
             signInUser(editUsername.getTextExt(),
                     editemail.getTextExt(), editPass.getTextExt())
         }
 
         butonSignUp.setOnClickListener {
+            progress.visible()
+            hideKeyBoard()
             signUpUser(editUsername.getTextExt(),
                     editemail.getTextExt(), editPass.getTextExt())
         }
@@ -63,9 +67,12 @@ class LogInActivity : AppCompatActivity() {
                             showSnackBar(loglogloglog, getString(R.string.auth_fail))
                         }
 
+                        progress.gone()
                     }
 
         } else {
+
+            progress.gone()
             showSnackBar(loglogloglog, getString(R.string.empty_error))
         }
 
@@ -90,9 +97,10 @@ class LogInActivity : AppCompatActivity() {
                             showSnackBar(loglogloglog, getString(R.string.auth_fail))
 
                         }
-
+                        progress.gone()
                     }
         } else {
+            progress.gone()
             showSnackBar(loglogloglog, getString(R.string.empty_error))
         }
     }
