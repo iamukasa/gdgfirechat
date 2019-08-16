@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    tools:context="com.amusoft.gdgfirechat.LogInActivity">
+    tools:context="com.amusoft.gdgfirechat.ui.LogInActivity">
 
     <TextView
         android:layout_marginTop="60dp"
@@ -69,4 +69,11 @@
         android:textColor="@color/white_pure"
         android:id="@+id/butonLogIn"
         android:layout_gravity="center_horizontal" />
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:id="@+id/progress"/>
 </LinearLayout>

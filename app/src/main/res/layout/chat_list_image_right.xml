@@ -24,7 +24,7 @@
             android:textColor="@android:color/primary_text_light"
             tools:text="Hello bubbles!" />
 
-        <com.amusoft.gdgfirechat.CircleImageView
+        <com.amusoft.gdgfirechat.view.CircleImageView
             android:id="@+id/image_view"
             android:layout_width="54dp"
             android:layout_height="54dp"
