@@ -25,15 +25,42 @@
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925152295766-qc8jubgu45eci7n9u45c1fhaojg1k4ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:925152295766:android:e8f63e9dddbc82a2",
+        "android_client_info": {
+          "package_name": "com.amusoft.gdgfirechat2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "925152295766-qc8jubgu45eci7n9u45c1fhaojg1k4ak.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOchpw0qKhS-8hCTsInKX0hEJGDHwRzeE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925152295766-qc8jubgu45eci7n9u45c1fhaojg1k4ak.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

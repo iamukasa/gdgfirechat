@@ -23,7 +23,8 @@
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-3940256099942544~3347511713" />
 
-        <activity android:name=".ui.LogInActivity">
+        <activity android:name=".ui.LogInActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,7 +36,8 @@
             android:label="@string/app_name"
             android:theme="@style/AppTheme" />
 
-        <service android:name=".MyFirebaseMessagingService">
+        <service android:name=".MyFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

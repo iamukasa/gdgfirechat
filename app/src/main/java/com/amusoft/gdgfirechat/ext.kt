@@ -11,6 +11,7 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
+import java.util.*
 
 
 fun showSnackBar(v: View, msg: String) {
@@ -46,4 +47,13 @@ fun View.gone() {
 
 fun View.visible() {
     visibility = View.VISIBLE
+}
+
+fun toUrlefy(question: String) : String {
+    val newquestion = question.toLowerCase(Locale.getDefault()).replace(" ","%20")
+    return  newquestion
+}
+fun stripUsername(question: String) : String {
+    val newquestion = question.toLowerCase(Locale.getDefault()).replace("@sophiebot","")
+    return  newquestion
 }

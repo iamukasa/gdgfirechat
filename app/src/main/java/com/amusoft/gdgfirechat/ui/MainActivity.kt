@@ -1,5 +1,6 @@
 package com.amusoft.gdgfirechat.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
@@ -16,11 +17,22 @@ import androidx.core.content.res.ResourcesCompat
 import com.amusoft.gdgfirechat.R
 import com.amusoft.gdgfirechat.adapter.FirebaseListAdapter
 import com.amusoft.gdgfirechat.model.ChatMessage
+import com.amusoft.gdgfirechat.showSnackBar
+import com.amusoft.gdgfirechat.stripUsername
+import com.amusoft.gdgfirechat.toUrlefy
+import com.android.volley.DefaultRetryPolicy
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.BasicNetwork
+import com.android.volley.toolbox.DiskBasedCache
+import com.android.volley.toolbox.HurlStack
+import com.android.volley.toolbox.JsonObjectRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -54,7 +66,12 @@ class MainActivity : AppCompatActivity() {
             if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 // Perform action on key press
                 val question = chat_editText.text.toString()
+                if(question.contains("@SophieBot")){
+                    getAnswer("SophieBot", stripUsername(question))
+                }
+
                 sendMessage(setupUsername(), question)
+
                 chat_editText.setText("")
                 return@OnKeyListener true
             }
@@ -73,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         startActivityForResult(intent, RC_TAKE_PICTURE)
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK && data != null) {
@@ -179,6 +197,49 @@ class MainActivity : AppCompatActivity() {
             chat_editText.text.clear()
         }
     }
+    private fun getAnswer(username: String, question: String) {
+        var apilink ="https://publicapi.sophiebot.ai/answer/"
+        var apireuest=apilink+ toUrlefy(question)
+        //TODO send request to api and add it to firebase
+
+        // Instantiate the cache
+        val cache = DiskBasedCache(cacheDir, 1024 * 1024) // 1MB cap
+        // Set up the network to use HttpURLConnection as the HTTP client.
+        val network = BasicNetwork(HurlStack())
+        // Instantiate the RequestQueue with the cache and network. Start the queue.
+        val requestQueue = RequestQueue(cache, network).apply {
+            start() }
+
+        val jsonObjectRequest = JsonObjectRequest(
+            Request.Method.GET, apireuest, null,
+            { response ->
+                var strResp = response.toString()
+                val jsonObj: JSONObject = JSONObject(strResp)
+                jsonObj.get("answer")?.let {
+                    val chat = ChatMessage(username,it.toString())
+                    // Create a new, auto-generated child of that chat location, and save our chat data there
+                    sendMessage(chat.author,chat.message)
+                }
+            },
+            { error ->
+                // TODO: Handle error
+                showSnackBar(chat_listView,"Disconnected from the internet, this version of SophieBot cannot work offline")
+            }
+        )
+        jsonObjectRequest.retryPolicy = DefaultRetryPolicy(
+            500000000,
+            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+
+// Access the RequestQueue through your singleton class.
+        requestQueue.add(jsonObjectRequest)
+
+
+    }
+
+
+
 
     private fun setToolBar() {
 
@@ -198,6 +259,7 @@ class MainActivity : AppCompatActivity() {
         toolbarAdminDetails.setTitleTextColor(ResourcesCompat.getColor(resources, R.color.white_pure, null))
     }
 
+    @SuppressLint("SoonBlockedPrivateApi")
     private fun getOverflowMenu() {
 
         try {
